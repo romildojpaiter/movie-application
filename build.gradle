@@ -1,0 +1,205 @@
+plugins {
+    id 'java'
+    id 'idea'
+    id 'jacoco'
+    id "org.sonarqube" version "3.3"
+    id 'org.springframework.boot' version '3.4.6'
+    id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group       = 'com.outsera.movie'
+description = 'Service responsável por consulta a filmes da Golden Raspberry Awards'
+version     = '0.0.1-SNAPSHOT'
+
+// encoding
+compileJava.options.encoding = 'UTF-8'
+compileTestJava.options.encoding = 'UTF-8'
+
+jar {
+    enabled = false
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+springBoot {
+    buildInfo()
+}
+
+configurations {
+    implementation.exclude module: 'spring-boot-starter-tomcat'
+    developmentOnly
+    runtimeClasspath {
+        extendsFrom developmentOnly
+    }
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+    integrationTestCompile.extendsFrom testCompile
+    integrationTestRuntime.extendsFrom testRuntime
+    integrationTestImplementation.extendsFrom testImplementation
+    testImplementation.extendsFrom implementation
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+
+ext {
+    springCloudVersion = '2024.0.1'
+    springFrameworkVersion = '6.2.8'
+    springGuiceVersion = "2.0.2"
+    googleGuiceVersion = "7.0.0"
+    guavaVersion = "33.4.0-jre"
+    jettyVersion = '11.0.20'
+    docOpenApiWebfluxVersion = '2.1.0'
+    commonsFileuploadVersion = '1.5'
+    logbackClassicVersion = '1.5.15'
+    mapStructVersion = '1.6.3'
+    mockitoVersion = '4.8.0'
+    docOpenApiWebfluxVersion = '2.1.0'
+    apacheCommonsVersion = '3.12.0'
+    logStashVersion = '7.4'
+    okhttp3Version = '4.12.0'
+    mockitoVersion = '4.8.0'
+}
+
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    implementation 'org.springframework.kafka:spring-kafka'
+    implementation 'org.apache.kafka:kafka-clients'
+
+    implementation 'com.playtika.reactivefeign:feign-reactor-spring-cloud-starter:4.2.1'
+
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+    implementation 'org.mybatis:mybatis-spring:3.0.3'
+
+    // CSV
+    implementation 'com.opencsv:opencsv:5.9'
+
+    //LOMBOK
+    compileOnly 'org.projectlombok:lombok'
+    implementation "org.projectlombok:lombok"
+    annotationProcessor "org.projectlombok:lombok"
+    testAnnotationProcessor 'org.projectlombok:lombok'
+
+    //MAPSTRUCT
+    annotationProcessor "org.mapstruct:mapstruct-processor:${mapStructVersion}"
+    implementation "org.mapstruct:mapstruct:${mapStructVersion}"
+
+    //DOC
+    implementation "org.springdoc:springdoc-openapi-starter-webflux-ui:${docOpenApiWebfluxVersion}"
+
+    // Consulta reativa
+    implementation 'org.springframework.boot:spring-boot-starter-data-r2dbc'
+    implementation 'jakarta.persistence:jakarta.persistence-api:3.2.0'
+
+    runtimeOnly 'com.h2database:h2:2.3.232'
+    implementation 'io.r2dbc:r2dbc-h2'
+    implementation 'io.r2dbc:r2dbc-pool'
+
+    // FIX ACTUATOR GUICE VERSION
+    implementation "com.google.guava:guava:${guavaVersion}"
+    implementation "org.springframework.guice:spring-guice:${springGuiceVersion}"
+
+    //APACHE
+    implementation "org.apache.commons:commons-lang3:${apacheCommonsVersion}"
+    implementation('org.apache.httpcomponents:httpclient:4.5.13') {
+        exclude group: 'commons-logging', module: 'commons-logging'
+    }
+
+    implementation 'org.yaml:snakeyaml:2.2'
+
+    //LOG
+    implementation "org.apache.logging.log4j:log4j-jcl"
+    implementation "net.logstash.logback:logstash-logback-encoder:${logStashVersion}"
+
+    implementation 'asm:asm:3.3.1'
+
+    // UNIT-TESTS
+    testImplementation 'io.projectreactor:reactor-test'
+    testImplementation 'io.r2dbc:r2dbc-h2'
+    testImplementation 'com.h2database:h2'
+    testImplementation "org.mockito:mockito-core:${mockitoVersion}"
+    testImplementation "org.mockito:mockito-inline:${mockitoVersion}"
+    testImplementation "com.squareup.okhttp3:okhttp:${okhttp3Version}"
+    testImplementation "com.squareup.okhttp3:mockwebserver:${okhttp3Version}"
+    testImplementation "org.projectlombok:lombok"
+    testImplementation('com.github.javafaker:javafaker:1.0.2') {
+        exclude 'group': 'org.yaml', 'module': 'snakeyaml'
+    }
+    testImplementation('org.springframework.boot:spring-boot-starter-test:3.1.0') {
+        exclude 'group': 'org.junit.vintage', 'module': 'junit-vintage-engine'
+    }
+
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    implementation 'io.netty:netty-all:4.1.117.Final'
+
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework:spring-framework-bom:${springFrameworkVersion}"
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+        mavenBom "com.google.inject:guice-bom:${googleGuiceVersion}"
+        mavenBom "org.eclipse.jetty:jetty-bom:${jettyVersion}"
+    }
+}
+
+jacoco {
+    toolVersion = "0.8.10"
+}
+
+sonarqube {
+    properties {
+        property "sonar.sources", "src/main"
+        property "sonar.tests", "src/test"
+        property "sonar.host.url", project.SONAR_HOST_URL
+        property "sonar.projectKey", project.SONAR_PROJECT_KEY
+        property "sonar.organization", project.SONAR_ORGANIZATION
+        property "sonar.jacoco.reportPath", project.SONAR_JACOCO_REPORT_PATH
+        property "sonar.scm.provider", project.SONAR_SCM_PROVIDER
+        property "sonar.sourceEncoding", "UTF-8"
+        property 'sonar.coverage.jacoco.xmlReportPaths', 'build/jacoco/jacoco.xml'
+        property 'sonar.coverage.exclusions', "**/config/**/*,**/model/**/*,**/dto/**/*,**/entities/**/*,**/converters/**/*,**/*Exception*.java,**Enum.java,**Entity.java,**Config.java,**Application.java"
+    }
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+
+    // Show test results.
+    testLogging {
+        events = ["passed", "skipped", "failed"]
+    }
+
+    finalizedBy([jacocoTestReport])
+}
+
+jacocoTestReport {
+    dependsOn test
+    reports {
+        xml.required = true
+        html.required = true
+        xml.outputLocation.set(layout.buildDirectory.file("reports/jacoco.xml"))
+        html.outputLocation.set(layout.buildDirectory.dir("reports/jacocoHtml"))
+    }
+
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: [
+                    "**Application.java"
+            ])
+        }))
+    }
+}

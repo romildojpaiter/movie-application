@@ -1,0 +1,62 @@
+logging:
+  level:
+    root: INFO
+    org.springframework.web: INFO
+    reactor.netty.http.client: INFO
+    org.springframework.r2dbc: INFO
+    org.springframework.data.r2dbc.core.R2dbcEntityTemplate: INFO
+    org.springframework.r2dbc.core: INFO
+    io.r2dbc.h2.QUERY: INFO
+    io.r2dbc.h2.PARAM: INFO
+  pattern:
+    console: "%highlight(<<%-5level>>) %d{HH:mm:ss:SSS} [%thread] %magenta(%c{0}.%M) - %m%n"
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "health"
+  endpoint:
+    health:
+      show-details: always
+  info:
+    git:
+      mode: full
+
+server:
+  port: 8080
+
+spring:
+  application:
+    name: Movie Application
+  webflux:
+    base-path: /movie
+  jackson:
+    serialization:
+      write_dates_as_timestamps: false
+  cloud:
+    openfeign:
+      client:
+        config:
+          default:
+            connectTimeout: 5000
+            readTimeout: 5000
+            loggerLevel: basic
+  r2dbc:
+    url: r2dbc:h2:mem:///testdb?options=DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    # url: r2dbc:h2:mem:///~/db/testdb?options=DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    pool:
+      initial-size: 5
+      max-size: 10
+      max-idle-time: 30
+      validation-query: SELECT 1
+    username: sa
+    password:
+  devtools:
+    add-properties: false
+
+springdoc:
+  api-docs:
+    path: /docs
+  swagger-ui:
+    path: /docs.html
