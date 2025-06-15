@@ -48,7 +48,7 @@
 					"variable": [
 						{
 							"key": "id",
-							"value": "1"
+							"value": "206"
 						}
 					]
 				}
@@ -76,7 +76,7 @@
 					"variable": [
 						{
 							"key": "id",
-							"value": "1"
+							"value": "207"
 						}
 					]
 				}
@@ -90,7 +90,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"year\": 2025,\n    \"title\": \"Title movie\",\n    \"studios\": \"Studios new\",\n    \"producers\": \"Producer Not Identificated\",\n    \"winner\": false\n}",
+					"raw": "{\n    \"year\": 2025,\n    \"title\": \"Title movie\",\n    \"studios\": \"Studios new\",\n    \"producers\": \"Producer Not Identificated\",\n    \"winner\": true\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -120,7 +120,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"year\": 2025,\n    \"title\": \"Title movie\",\n    \"studios\": \"Studios new\",\n    \"producers\": \"Producer Not Identificated\",\n    \"winner\": false\n}",
+					"raw": "{\n    \"title\": \"Romildo Jozue Paiter\",\n    \"winner\": false\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -128,7 +128,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/movie/api/movies",
+					"raw": "http://localhost:8080/movie/api/movies/:id",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -137,7 +137,14 @@
 					"path": [
 						"movie",
 						"api",
-						"movies"
+						"movies",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "207"
+						}
 					]
 				}
 			},
