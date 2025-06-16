@@ -52,7 +52,7 @@ Para acesso ao documentação do OpenApi acesso o link abaixo
 Importe a collection do postman que está no diretório **docs**
 
 ```
-outsera - movies.postman_collection
+Movie Application.postman_collection.json
 ```
 
 
