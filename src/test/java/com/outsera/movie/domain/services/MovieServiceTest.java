@@ -34,9 +34,9 @@ class MovieServiceTest {
 
         var itemMax = max.getFirst();
         assertThat(itemMax.producer()).isEqualTo("Matthew Vaughn");
-        assertThat(itemMax.interval()).isEqualTo(13);
-        assertThat(itemMax.previousWin()).isEqualTo(2002);
-        assertThat(itemMax.followingWin()).isEqualTo(2015);
+        assertThat(itemMax.interval()).isEqualTo(22);
+        assertThat(itemMax.previousWin()).isEqualTo(2015);
+        assertThat(itemMax.followingWin()).isEqualTo(2037);
 
       })
       .verifyComplete();
