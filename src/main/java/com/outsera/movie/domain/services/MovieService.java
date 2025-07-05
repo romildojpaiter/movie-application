@@ -93,8 +93,10 @@ public class MovieService {
         return;
       }
 
-      int minYear = years.stream().min(Integer::compareTo).orElse(0);
-      int maxYear = years.stream().max(Integer::compareTo).orElse(0);
+      years.sort((o1, o2) -> o2 > o1 ? -1 : 1);
+
+      int minYear = years.get(years.size() - 2);
+      int maxYear = years.getLast();
 
       int interval = maxYear - minYear;
 
